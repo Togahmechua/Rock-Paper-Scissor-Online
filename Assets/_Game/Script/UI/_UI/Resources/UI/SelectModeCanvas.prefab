@@ -525,6 +525,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDestroyOnClose: 0
+  offlineBtn: {fileID: 3511322010862699159}
 --- !u!1 &6760120190014287617
 GameObject:
   m_ObjectHideFlags: 0

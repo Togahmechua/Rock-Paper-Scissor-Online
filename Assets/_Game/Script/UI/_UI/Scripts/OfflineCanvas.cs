@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class OfflineCanvas : UICanvas
 {
+    [SerializeField] private Image timerBar;
+    [SerializeField] private Text[] scoreTxt;
     [SerializeField] private Button[] playerHandBtn;
     [SerializeField] private Sprite[] handSpr;
     [SerializeField] private Image playerHandImg;
@@ -13,10 +15,17 @@ public class OfflineCanvas : UICanvas
     private Animator anim;
     private EHandType botHandType;
     private EHandType playerHandType;
+    private float availableTime = 25f;
+    private float remainingTime;
+    private bool isTimerRunning;
+    private int score;
 
     private void OnEnable()
     {
-        SetRandomBotHand();
+        remainingTime = availableTime;
+        isTimerRunning = false;
+        score = 0;
+        SetScore();
     }
 
     void Start()
@@ -27,6 +36,31 @@ public class OfflineCanvas : UICanvas
             int index = i;
             playerHandBtn[i].onClick.AddListener(() => HandBtn(index));
         }
+    }
+
+    private void Update()
+    {
+        if (remainingTime <= 0)
+        {
+            UIManager.Ins.CloseUI<OfflineCanvas>();
+            UIManager.Ins.OpenUI<WinCanvas>().SetScore(score);
+            return;
+        }
+        RunTimerBar();
+    }
+
+    private void RunTimerBar()
+    {
+        if (!isTimerRunning)
+            return;
+        remainingTime -= Time.deltaTime;
+        remainingTime = Mathf.Clamp(remainingTime, 0f, availableTime);
+        timerBar.fillAmount = remainingTime / availableTime;
+    }
+
+    public void AbleToRunTimerBar()
+    {
+        isTimerRunning = true;
     }
 
     private void HandBtn(int index)
@@ -50,23 +84,42 @@ public class OfflineCanvas : UICanvas
         botHandType = (EHandType)rand;
     }
 
+    private void SetScore()
+    {
+        for (int i = 0; i < scoreTxt.Length; i++)
+        {
+            scoreTxt[i].text = "Score : " + score.ToString();
+        }
+    }
 
     public void CheckResult()
     {
         if (playerHandType == botHandType)
         {
             Debug.Log("Kết quả: Hòa!");
+            remainingTime += 1f;
         }
         else if ((playerHandType == EHandType.Rock && botHandType == EHandType.Scissor) ||
                  (playerHandType == EHandType.Paper && botHandType == EHandType.Rock) ||
                  (playerHandType == EHandType.Scissor && botHandType == EHandType.Paper))
         {
             Debug.Log("Kết quả: Bạn thắng!");
+            remainingTime += 2f;
+            score += 1;
+            SetScore();
         }
         else
         {
             Debug.Log("Kết quả: Bot thắng!");
+            remainingTime -= 1f;
+            if (score >= 1)
+            {
+                score -= 1;
+            }
+            SetScore();
         }
+
+        anim.Play(CacheString.TAG_OFFLINECANVASBOTHAND);
     }
 }
 

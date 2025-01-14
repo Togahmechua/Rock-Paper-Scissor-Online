@@ -13,7 +13,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
             if (m_Ins == null)
             {
                 // Find singleton
-                m_Ins = FindObjectOfType<T>();
+                m_Ins = FindAnyObjectByType<T>();
 
                 // Create new instance if one doesn't already exist.
                 if (m_Ins == null)

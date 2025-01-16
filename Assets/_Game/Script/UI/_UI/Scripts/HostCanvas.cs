@@ -49,9 +49,8 @@ public class HostCanvas : UICanvas
         CloseThisCanvas();
     }
 
-    public override void OnDestroy()
+    public void OnDestroy()
     {
-        base.OnDestroy();
         if (NetworkManager.Singleton != null)
         {
             NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
@@ -61,6 +60,7 @@ public class HostCanvas : UICanvas
 
     private void CloseThisCanvas()
     {
-        UIManager.Ins.CloseUI<HostCanvas>();
+        gameObject.SetActive(false);
+        UIManager.Ins.OpenUI<OnlineCanvas>();
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class UICanvas : NetworkBehaviour
+public class UICanvas : MonoBehaviour
 {
     //public bool IsAvoidBackKey = false;
     public bool IsDestroyOnClose = false;

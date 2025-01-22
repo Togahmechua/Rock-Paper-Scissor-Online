@@ -1519,6 +1519,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDestroyOnClose: 0
+  rockBtn: {fileID: 2689433928020394431}
+  paperBtn: {fileID: 4131959022540424562}
+  scissorBtn: {fileID: 149531424459028572}
+  urHandType: 0
 --- !u!1 &4760990430839374008
 GameObject:
   m_ObjectHideFlags: 0

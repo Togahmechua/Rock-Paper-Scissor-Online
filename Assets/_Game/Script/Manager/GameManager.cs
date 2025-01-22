@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -12,6 +9,12 @@ public class GameManager : Singleton<GameManager>
 
     // Start is called before the first frame update
     public bool isActive;
+
+    public event EventHandler<OnClickedHandButtonEventArgs> OnClickedHandButton;
+    public class OnClickedHandButtonEventArgs : EventArgs
+    {
+        public EHandType handType;
+    }
 
     protected void Awake()
     {
@@ -47,5 +50,13 @@ public class GameManager : Singleton<GameManager>
     //    return gameState == state;
     //}
 
+
+    public void ClickedOnHandButton(EHandType eHandType)
+    {
+        OnClickedHandButton?.Invoke(this, new OnClickedHandButtonEventArgs()
+        {
+            handType = eHandType
+        });
+    }
 }
 

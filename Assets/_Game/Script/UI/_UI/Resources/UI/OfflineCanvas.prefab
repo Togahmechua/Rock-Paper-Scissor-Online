@@ -839,19 +839,17 @@ MonoBehaviour:
   scoreTxt:
   - {fileID: 4863353590631711817}
   - {fileID: 3517701896145460636}
-  playerHandBtn:
-  - {fileID: 524123315587013224}
-  - {fileID: 7878527683386727522}
-  - {fileID: 5023925414377947818}
-  handSpr:
-  - {fileID: 21300000, guid: 08fc940ddf7f47dfbb847486676ea275, type: 3}
-  - {fileID: 21300000, guid: 62acdfc9c29247b6ae65f166e7e71f95, type: 3}
-  - {fileID: 21300000, guid: 885b897e0cf54d99b22ec5f33d55f8d5, type: 3}
   playerHandImg: {fileID: 5624229662999039257}
   botHandImg: {fileID: 8198754145229974294}
+  rockBtn: {fileID: 524123315587013224}
+  paperBtn: {fileID: 7878527683386727522}
+  scissorBtn: {fileID: 5023925414377947818}
+  rockSpr: {fileID: 21300000, guid: 08fc940ddf7f47dfbb847486676ea275, type: 3}
+  paperSpr: {fileID: 21300000, guid: 62acdfc9c29247b6ae65f166e7e71f95, type: 3}
+  scissorSpr: {fileID: 21300000, guid: 885b897e0cf54d99b22ec5f33d55f8d5, type: 3}
 --- !u!95 &5303979656884046998
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -865,6 +863,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1

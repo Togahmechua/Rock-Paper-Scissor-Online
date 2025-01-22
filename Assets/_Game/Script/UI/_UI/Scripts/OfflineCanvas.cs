@@ -5,12 +5,24 @@ using UnityEngine.UI;
 
 public class OfflineCanvas : UICanvas
 {
+    [Header("Image && Text")]
     [SerializeField] private Image timerBar;
     [SerializeField] private Text[] scoreTxt;
-    [SerializeField] private Button[] playerHandBtn;
-    [SerializeField] private Sprite[] handSpr;
     [SerializeField] private Image playerHandImg;
     [SerializeField] private Image botHandImg;
+
+    [Header("Button")]
+    [SerializeField] private Button rockBtn;
+    [SerializeField] private Button paperBtn;
+    [SerializeField] private Button scissorBtn;
+
+    [Header("Sprites")]
+    [SerializeField] private Sprite rockSpr;
+    [SerializeField] private Sprite paperSpr;
+    [SerializeField] private Sprite scissorSpr;
+
+    private Dictionary<EHandType, Sprite> handDetails = new Dictionary<EHandType, Sprite>();
+    private List<EHandType> filteredValues;
 
     private Animator anim;
     private EHandType botHandType;
@@ -22,20 +34,31 @@ public class OfflineCanvas : UICanvas
 
     private void OnEnable()
     {
-        remainingTime = availableTime;
-        isTimerRunning = false;
-        score = 0;
-        SetScore();
+       OnGameStart();
     }
 
     void Start()
     {
+        handDetails.Add(EHandType.Rock, rockSpr);
+        handDetails.Add(EHandType.Paper, paperSpr);
+        handDetails.Add(EHandType.Scissor, scissorSpr);
+        InitializeHandTypeList();
+
         anim = GetComponent<Animator>();
-        for (int i = 0; i < playerHandBtn.Length; i++)
+        rockBtn.onClick.AddListener(() =>
         {
-            int index = i;
-            playerHandBtn[i].onClick.AddListener(() => HandBtn(index));
-        }
+            HandBtn(EHandType.Rock);
+        });
+
+        paperBtn.onClick.AddListener(() =>
+        {
+            HandBtn(EHandType.Paper);
+        });
+
+        scissorBtn.onClick.AddListener(() =>
+        {
+            HandBtn(EHandType.Scissor);
+        });
     }
 
     private void Update()
@@ -47,6 +70,17 @@ public class OfflineCanvas : UICanvas
             return;
         }
         RunTimerBar();
+    }
+
+    private void OnGameStart()
+    {
+        //Reset
+        playerHandType = EHandType.None;
+        botHandType = EHandType.None;
+        remainingTime = availableTime;
+        isTimerRunning = false;
+        score = 0;
+        SetScore();
     }
 
     private void RunTimerBar()
@@ -63,25 +97,48 @@ public class OfflineCanvas : UICanvas
         isTimerRunning = true;
     }
 
-    private void HandBtn(int index)
+    private void HandBtn(EHandType eHandType)
     {
         anim.Play(CacheString.TAG_PLAYERHAND);
-        if (index >= 0 && index < handSpr.Length)
-        {
-            playerHandImg.sprite = handSpr[index];
-            playerHandType = (EHandType)index;
-        }
-        else
-        {
-            Debug.LogWarning("Index không hợp lệ!");
-        }
+     
+       if (handDetails.TryGetValue(eHandType, out Sprite spr))
+       {
+            playerHandImg.sprite = spr;
+            playerHandType = eHandType;
+       }
     }
 
     private void SetRandomBotHand()
     {
-        int rand = Random.Range(0, handSpr.Length);
-        botHandImg.sprite = handSpr[rand];
-        botHandType = (EHandType)rand;
+        EHandType bHandType = GetHandTypeList();
+
+        if (handDetails.TryGetValue(bHandType, out Sprite spr))
+        {
+            botHandImg.sprite = spr;
+            botHandType = bHandType;
+        }
+    }
+
+    private void InitializeHandTypeList()
+    {
+        // Lấy tất cả giá trị của enum
+        EHandType[] values = (EHandType[])System.Enum.GetValues(typeof(EHandType));
+
+        // Tạo danh sách và loại bỏ None
+        filteredValues = new List<EHandType>(values);
+        filteredValues.Remove(EHandType.None);
+    }
+
+    private EHandType GetHandTypeList()
+    {
+        if (filteredValues == null || filteredValues.Count == 0)
+        {
+            Debug.LogWarning("Danh sách filteredValues chưa được khởi tạo!");
+            return EHandType.None;
+        }
+
+        int randomIndex = Random.Range(0, filteredValues.Count);
+        return filteredValues[randomIndex];
     }
 
     private void SetScore()
@@ -110,7 +167,7 @@ public class OfflineCanvas : UICanvas
         }
         else
         {
-            Debug.Log("Kết quả: Bot thắng!");
+            Debug.Log("Kết quả: Bạn thua!");
             remainingTime -= 1f;
             if (score >= 1)
             {
@@ -125,7 +182,8 @@ public class OfflineCanvas : UICanvas
 
 public enum EHandType
 {
-    Rock = 0,
-    Paper = 1,
-    Scissor = 2
+    None = 0,
+    Rock = 1,
+    Paper = 2,
+    Scissor = 3
 }

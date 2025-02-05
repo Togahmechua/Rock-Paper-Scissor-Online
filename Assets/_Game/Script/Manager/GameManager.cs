@@ -97,7 +97,6 @@ public class GameManager : NetworkBehaviour
     {
         clientHand.Value = eHandType;
         CheckResult();
-        allChoosed |= true;
     }
 
 
@@ -105,6 +104,7 @@ public class GameManager : NetworkBehaviour
     {
         if (hostHand.Value != EHandType.None && clientHand.Value != EHandType.None)
         {
+            allChoosed = true;
             Debug.Log($"Host chọn: {hostHand.Value}, Client chọn: {clientHand.Value}");
 
             if (hostHand.Value == clientHand.Value)
@@ -123,10 +123,6 @@ public class GameManager : NetworkBehaviour
                 Debug.Log("Client thắng!");
                 clientStar++;
             }
-
-            // Reset để chơi ván mới
-            hostHand.Value = EHandType.None;
-            clientHand.Value = EHandType.None;
         }
     }
 }

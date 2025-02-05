@@ -8,12 +8,14 @@ public class BoostBtn : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     private void OnEnable()
     {
+        Debug.Log("C");
         img.gameObject.SetActive(false);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-       img.gameObject.SetActive(true);
+        img.gameObject.SetActive(true);
+        Debug.Log("A");
     }
 
     public void OnPointerExit(PointerEventData eventData)

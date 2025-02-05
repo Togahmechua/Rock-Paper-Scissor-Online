@@ -63,7 +63,7 @@ public class OnlineCanvas : UICanvas
         }
     }
 
-    //Animation Event
+    #region Animation Event
     public void SetHand()
     {
         // Cập nhật tay của local player (host)
@@ -72,4 +72,10 @@ public class OnlineCanvas : UICanvas
         // Cập nhật tay của remote player (client)
         remoteHand.sprite = SetHandSpr(GameManager.Ins.GetClientHand());
     }
+
+    public void OnAnimationComplete()
+    {
+        GameManager.Ins.GetStart();
+    }
+    #endregion
 }
